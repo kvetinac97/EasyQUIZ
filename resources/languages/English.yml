@@ -1,0 +1,11 @@
+#English config:
+
+#Messages shown when plugin is enabled/disabled + version info
+plugin_enable: "EasyQUIZ ENABLED!"
+plugin_disable: "EasyQUIZ DISABLED!"
+version_info: "Running version 1.0.0"
+
+#Error messages:
+#You can use colors in format &1/§1 (&1 is recommended)
+permission_eq_command: "&cYou haven't got permission for command &e/eq!"
+too_many_arguments: "&cYou used too many arguments! &7&oUsage: /eq"

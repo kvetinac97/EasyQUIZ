@@ -1,0 +1,11 @@
+name: EasyQUIZ
+main: kvetinac97\Main
+api: [1.13.0]
+load: POSTWORLD
+description: "Easy quiz plugin for everyone!"
+version: 1.0.0
+author: kvetinac97
+
+commands: []
+
+permissions: []

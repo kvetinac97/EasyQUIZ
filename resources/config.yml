@@ -1,0 +1,40 @@
+#Default config for v1.0.0
+
+#Here, write your language: <= ENGLISH(en)
+#Ici, écrivez votre langue: <= FRANÇAIS(fr)
+#Zde napište váš jazyk: <= ČEŠTINA(cs)
+language: "fr"
+#If you selected English, you haven't to restart the server
+#Si vous avez choisi Français, redémarrez le serveur
+#Pokud jste si vybrali Češtinu, restartujte server
+
+#Version (1), don't change
+version: 1
+
+#Here write number of questions that should be generated for one quiz
+number_of_questions: 5
+
+#Time that players have to answer each question (in seconds)
+time_for_answer: 10
+
+#Write, if you want to share stats like
+#Answer: Yes Guessed: 20
+show_stats: true
+
+#Should be quiz e.g. started every X minutes after starting server?
+#Write interval in minutes
+auto_start: false
+auto_interval: 10 
+
+#Here, write max number of winners, unlimited for unlimited winners
+#If there'll be more players who guessed correctly than limit, plugin
+#will automatically pick limit (e.g. 5) winners
+winners: 1
+
+#Commands that will be executed for players who answer correctly
+win_commands:
+ - "give player iron_ignot 1"
+
+#Commands that will be executed for players who answer wrongly
+#Write false if you don't want to execute any commands
+lose_commands: false

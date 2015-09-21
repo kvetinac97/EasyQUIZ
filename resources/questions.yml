@@ -1,0 +1,12 @@
+#Here, write questions in following format:
+#Be sure that first answer is correct and other are wrong!
+#Of course, plugin'll randomly order answers
+
+# "Example question?":
+#  - "Correct answer"
+#  - "Wrong answer"
+
+"Do you like kvetinac97?":
+ - "Yes, we do."
+ - "No!"
+
