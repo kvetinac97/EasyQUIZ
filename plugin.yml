@@ -1,11 +1,33 @@
 name: EasyQUIZ
 main: kvetinac97\Main
 api: [1.13.0]
-load: POSTWORLD
+load: STARTUP
 description: "Easy quiz plugin for everyone!"
 version: 1.0.0
 author: kvetinac97
-
-commands: []
-
-permissions: []
+commands:
+ eq:
+  usage: "/eq"
+  description: "Universal command for starting the quiz"
+  permission: eq.command
+ aw:
+  usage: "/aw"
+  description: "Universal command for answering the quiz"
+  permission: eq.answer
+permissions:
+ eq:
+  default: op
+  description: "Top EasyQUIZ permission node"
+  children:
+   eq.command:
+    default: op
+    description: "You can start the quiz!"
+   eq.answer:
+    default: true
+    description: "You can answer the quiz"
+   eq.win:
+    default: true
+    description: "You are able to win!"
+   eq.lose:
+    default: op
+    description: "You won't lose anything if you have lost!"

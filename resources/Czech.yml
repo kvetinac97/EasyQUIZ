@@ -1,0 +1,25 @@
+#Český config:
+
+not_for_console: "&cTento příkaz není dostupný pro konzoli!"
+quiz_info: "&aZacíná novy kvíz!"
+quiz_not_running: "&cPráve nebeží žádné kvízy"
+avaible_answers: "&eNa vyber más následující odpovedi:"
+answer_format: "&e - %ANSWER"
+how_to_answer: "&bMužes odpovedet za pomoci /aw <odpoved>. Ujisti se že jsi neudelal žádny preklep!"
+answer_correct: "&aOdpovedel jsi správne. Pockej na konec kvízu abys dostal tvou vyhru!"
+aswer_wrong: "&cOdpovedel jsi spatne. Možná prijdes o nejake veci/peníze"
+already_answered: "&cUž jsi odpovídal!"
+win_quiz: "&Gratulujeme: Vyhrál jsi kvíz!"
+sorry_lose: "&cOdpovedel jsi správne, ale tvá odpoved nebyla vylosována."
+quiz_end: "&eKvíz skoncil!"
+quiz_end_one: "&bKvíz hrálo &e%NUMBER &bhrácu"
+quiz_end_two: "&aVyhrál/i: &e%VARIABLE"
+quiz_end_three: "&cProhrál/i: &e%NUMBER"
+
+
+#Error messages:
+#You can use colors in format &1/§1 (&1 is recommended)
+permission_eq_command: "&cNemás práva na príkaz &e/eq!"
+permission_eq_answer: "&cNemás práva na príkaz &e/aw!"
+too_many_arguments: "&cPoužil jsi moc argumentu! &7&oUžití: /eq"
+quiz_running: "&cKvíz už beží! Pockejte prosím..."

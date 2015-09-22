@@ -1,12 +1,11 @@
 #Default config for v1.0.0
 
 #Here, write your language: <= ENGLISH(en)
-#Ici, écrivez votre langue: <= FRANÇAIS(fr)
+#Ici, écrivez votre langue <= FRANÇAIS(fr)
+#Schreiben, sie ihre sprache <= DEUTSCH (de)
 #Zde napište váš jazyk: <= ČEŠTINA(cs)
-language: "fr"
-#If you selected English, you haven't to restart the server
-#Si vous avez choisi Français, redémarrez le serveur
-#Pokud jste si vybrali Češtinu, restartujte server
+#If you want add more languages, make a pull request on github!
+language: "en"
 
 #Version (1), don't change
 version: 1
@@ -30,10 +29,16 @@ auto_interval: 10
 #If there'll be more players who guessed correctly than limit, plugin
 #will automatically pick limit (e.g. 5) winners
 winners: 1
+#Do you want to write names of winners? e.g. Winners: kvetinac97, shoghicp
+#or just write: Winners: 2
+#You needn't write this if you have show_stats on false
+name_winners: true
 
 #Commands that will be executed for players who answer correctly
+#Write false if you don't want to execute any commands :3
+# %PLAYER will be replaced with name of winner/loser
 win_commands:
- - "give player iron_ignot 1"
+ - "give %PLAYER iron_ignot 1"
 
 #Commands that will be executed for players who answer wrongly
 #Write false if you don't want to execute any commands

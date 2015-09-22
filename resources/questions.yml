@@ -1,12 +1,13 @@
 #Here, write questions in following format:
-#Be sure that first answer is correct and other are wrong!
-#Of course, plugin'll randomly order answers
+#Be sure that you marked every correct answer with CORRECT_ at the beginning!
+#Plugin'll show answers in the same order you wrote them!!!
 
 # "Example question?":
-#  - "Correct answer"
+#  - "CORRECT_Correct answer"
 #  - "Wrong answer"
+#  - "Second wrong answer"
 
 "Do you like kvetinac97?":
- - "Yes, we do."
+ - "CORRECT_Yes, we do."
  - "No!"
 

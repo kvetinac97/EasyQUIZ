@@ -1,7 +1,0 @@
-#Český config:
-
-#Zde napište zprávy, které uvidíte v Konzoli:
-plugin_enable: "EasyQUIZ aktivován!"
-plugin_disable: "EasyQUIZ deaktivován!"
-version_info: "Právě běží verze 1.0.0"
-

@@ -12,7 +12,14 @@ class QuestionTask extends PluginTask{
  
  protected $plugin;
  
- public function __construct(Main $plugin)
-    
+ public function __construct(Main $plugin){
+  $this->plugin = $plugin;
+  parent::__construct($plugin);
+ }
+ 
+ public function onRun($t){
+  $this->plugin->endQuiz();   
+ }
+ 
 }
 

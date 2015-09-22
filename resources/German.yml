@@ -1,0 +1,25 @@
+#German config:
+ 
+not_for_console: "&cDieser Command ist nicht für die Console verfügbar"
+quiz_info: "&a Ein neues Quiz wird gestartet!"
+quiz_not_running: "&cEs ist kein Quiz verfügbar!"
+avaible_answers: "&eDu kannst eine von folgenden Antworten auswählen:"
+answer_format: "&e - %ANSWER"
+how_to_answer: "&bDu kannst mit /aw answer antworten. Überprüfe, ob die Antwort richtig ist!"
+answer_correct: "&aDeine Antwort war richtig. Warte bis zum ende, um dein Preis zu bekommen!"
+aswer_wrong: "&cDeine Antwort ist falsch. Du könntest Items/Geld verlieren :/"
+already_answered: "&cDu hast schon geantwortet!"
+win_quiz: "&aCongratulations: Du hast das Quiz gewonnen!"
+sorry_lose: "&cDeine Antwort war richtig, aber du wurdest nicht zum Gewinner ausgewählt."
+quiz_end: "&eDas Quiz wurde beendet!"
+quiz_end_one: "&bAm Quiz haben &e%NUMBER &bplayers teilgenommen!"
+quiz_end_two: "&aGewinner: &e%VARIABLE"
+quiz_end_three: "&cNicht gewonnen haben: &e%NUMBER"
+ 
+ 
+#Error messages:
+#You can use colors in format &1/§1 (&1 is recommended)
+permission_eq_command: "&cDu hast nicht die benötigten Rechte für den Command &e/eq!"
+permission_eq_answer: "&cDu hast nicht die benötigten Rechte für den Command &e/aw!"
+too_many_arguments: "&cDu hast zu viele Antworten gegeben! &7&oUsage: /eq"
+quiz_running: "&cEin Quiz läuft bereits! Bitte warte..."
