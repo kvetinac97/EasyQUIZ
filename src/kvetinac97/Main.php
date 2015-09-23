@@ -162,7 +162,7 @@ class Main extends PluginBase implements Listener{
   $players_played = \count($this->quiz_players);
   foreach ($this->quiz_players as $how => $player){
    if ($how == "wrong"){
-    if ($this->cfg->get("lose_commands") !== false){
+    if ($this->cfg->get("lose_commands") !== false and !($player->hasPermission("eq.lose"))){
      foreach ($this->cfg->get("lose_commands") as $com){
       $this->getServer()->getPluginManager()->dispatchCommand(new ConsoleCommandSender,\str_replace("%PLAYER",$player,$com));   
      }
