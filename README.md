@@ -13,7 +13,4 @@ Then, winner(s) will receive some prizes
 
 For more options, see config.yml
 
-Version Française: LISMOI.md
-Česká verze: ČTIMĚ.md
-
 If you want to translate EasyQUIZ into your own language, create a pull request on github
