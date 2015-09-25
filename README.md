@@ -13,4 +13,6 @@ Then, winner(s) will receive some prizes
 
 For more options, see config.yml
 
+<h3>New!!! Now, you can donate for support me! Donate <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=XQ5TDS9GZ38T2">>>HERE<<</a></h3>
+
 If you want to translate EasyQUIZ into your own language, create a pull request on github
