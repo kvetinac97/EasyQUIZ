@@ -1,20 +1,20 @@
 #English config:
 
 not_for_console: "&cThis command isn't avaible for Console"
-quiz_info: "&aThe new QUIZ is starting!"
+quiz_info: "&aThe new QUIZ is starting!"              
 quiz_not_running: "&cThere isn't any quiz running!"
-avaible_answers: "&eYou can select from following answers:"
+avaible_answers: "&7&oYou can select from following answers:"
 answer_format: "&e - %ANSWER"
 how_to_answer: "&bYou can answer with /aw answer. Make sure you haven't done any errros!"
-answer_correct: "&aYour answer is correct. Wait for the end for get your rewards!"
-aswer_wrong: "&cYour answer is wrong. You have chance to lose some items/money :/"
-already_answered: "&cYou've already answered!"
+answered: "&aYou have succesfully answered!"
 win_quiz: "&aCongratulations: You've won the quiz!"
 sorry_lose: "&cYour answer was correct, but you weren't picked."
+answers_were: "&eAnswers:"
+answer_was: "&7%QUESTION: &a%ANSWER"
 quiz_end: "&eThe quiz has ended!"
 quiz_end_one: "&bThe quiz was played by &e%NUMBER &bplayers"
-quiz_end_two: "&aPlayers won: &e%VARIABLE"
-quiz_end_three: "&cPlayer lost: &e%NUMBER"
+quiz_end_two: "&aPlayers won: &d%VARIABLE"
+quiz_end_three: "&cPlayers lost: &e%NUMBER"
 
 
 #Error messages:
@@ -22,4 +22,4 @@ quiz_end_three: "&cPlayer lost: &e%NUMBER"
 permission_eq_command: "&cYou haven't got permission for command &e/eq!"
 permission_eq_answer: "&cYou haven't got permission for command &e/aw!"
 too_many_arguments: "&cYou used too many arguments! &7&oUsage: /eq"
-quiz_running: "&cA quiz is already running! Wait please..."
+quiz_running: "&cThe quiz is already running! Wait please..."

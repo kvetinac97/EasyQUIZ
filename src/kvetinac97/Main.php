@@ -38,15 +38,15 @@ class Main extends PluginBase implements Listener{
    $this->msg = new Config($this->getDataFolder()."French.yml",Config::YAML);
    $this->getLogger()->info(TextFormat::GREEN."Langue choisi: Français");
   }
+  elseif ($this->cfg->get("language") == "de"){
+   $this->saveResource("German.yml");
+   $this->msg = new Config($this->getDataFolder()."German.yml",Config::YAML);
+   $this->getLogger()->info(TextFormat::GREEN."Language selected: German");
+  }
   elseif ($this->cfg->get("language") == "cs"){
    $this->saveResource("Czech.yml");
    $this->msg = new Config($this->getDataFolder()."Czech.yml",Config::YAML);
    $this->getLogger()->info(TextFormat::GREEN."Vybraný jazyk: Čeština");
-  }
-  elseif ($this->cfg->get("language") == "de"){
-   $this->saveResource("German.yml");
-   $this->msg = new Config($this->getDataFolder()."German.yml",Config::YAML);
-   $this->getLogger()->info(TextFormat::GREEN."Ausgewählte sprache: Deutsch");
   }
   else {
    $this->saveResource("English.yml");
@@ -58,8 +58,8 @@ class Main extends PluginBase implements Listener{
   $this->getLogger()->info(TextFormat::YELLOW."Running version 1.0.0");
   
   if ($this->cfg->get("auto_start") === true){
-   $this->getServer()->getScheduler()->scheduleRepeatingTask(new PostQuestionTask($this),$this->cfg->get("auto_interval")*20*60);   
-  }
+   $this->getServer()->getScheduler()->scheduleDelayedTask(new PostQuestionTask($this),$this->cfg->get("auto_interval")*20*60);   
+  } 
   
  }
     
@@ -92,41 +92,37 @@ class Main extends PluginBase implements Listener{
   }
   if ($cmd->getName() == "aw"){
    if ($sd->hasPermission("eq.answer")){
-    if ($sd instanceof Player){
-     if ($this->quiz_players !== []){
-      if (!(\in_array($sd->getName(),$this->quiz_players))){
+    if (!($sd instanceof ConsoleCommandSender)){
+     if ($this->curr_aw !== null){
        $typed = \implode(" ",$args); 
-       foreach ($this->curr_aw as $answer){
-        if (strpos("CORRECT_",$answer)){
-         if ($typed == $answer){
-          $sd->sendMessage($this->getMsg("answer_correct"));
-          $temp_array = ["correct" => $sd->getName()];
-          $this->quiz_players = array_merge($temp_array,$this->quiz_players);
-          return true;
+        foreach ($this->curr_aw as $question => $answers){
+         foreach ($answers as $answer){
+         if (stripos($answer,"CORRECT_") !== false){         
+          if ($typed == \str_replace("CORRECT_","",$answer)){
+           $sd->sendMessage($this->getMsg("answered"));
+           $temp_array = [$sd->getName() => "correct"];
+           $this->quiz_players = array_merge($temp_array,$this->quiz_players);
+           return true;
+          }
+          else {
+           $sd->sendMessage($this->getMsg("answered"));  
+           $temp_array = [$sd->getName() => "wrong"];
+           $this->quiz_players = array_merge($temp_array,$this->quiz_players);
+           return true;
+          }
          }
-         else {
-          $sd->sendMessage($this->getMsg("answer_wrong"));  
-          $temp_array = ["wrong" => $sd->getName()];
-          $this->quiz_players = array_merge($temp_array,$this->quiz_players);
-          return true;
-         }
+         return true;
+        }
+         return true;
         }
         return true;
        }
-       return true;
-      }
-      else {
-       $sd->sendMessage($this->getMsg("already_answered"));
-       return true;
-      }
-      return true;
-     }
      else {
       $sd->sendMessage($this->getMsg("quiz_not_running"));    
       return true;
      }
      return true;
-    }
+     }
     else {
      $sd->sendMessage($this->getMsg("not_for_console"));  
      return true;
@@ -138,101 +134,125 @@ class Main extends PluginBase implements Listener{
     return true;
    }
   }
- }
+  }
  
  public function newQuiz(){
-  $quiz_questions = \array_rand($this->questions->getAll(),$this->cfg->get("number_of_questions"));
-  $this->getServer()->getScheduler()->scheduleDelayedTask(new QuestionTask($this),$this->cfg->get("time_for_answer")*20);
-  foreach ($this->getServer()->getOnlinePlayers() as $p){
-   $p->sendMessage(TextFormat::GREEN.$this->getMsg("quiz_info"));
-   foreach ($quiz_questions as $question => $answers){
-    $this->curr_aw = $answers; 
+  if ($this->curr_aw === null){
+   $quiz_questions = array_rand($this->questions->getAll(),1);
+   $this->getServer()->getScheduler()->scheduleDelayedTask(new QuestionTask($this),($this->cfg->get("time_for_answer")*20));
+   foreach ($this->getServer()->getOnlinePlayers() as $p){
+    $p->sendMessage(TextFormat::GREEN.$this->getMsg("quiz_info"));
+    $question = $quiz_questions;
+    $answers = $this->questions->get($question);
+    $this->curr_aw = [$question => $answers];
+    $p->sendMessage("-----------------------"); 
     $p->sendMessage(TextFormat::YELLOW.$question); 
     $p->sendMessage("-----------------------");
     $p->sendMessage($this->getMsg("avaible_answers"));
     foreach ($answers as $answer){
-     $p->sendMessage(\str_replace("%ANSWER",$answer,$this->getMsg("answer_format")));  
+     $p->sendMessage(\str_replace("CORRECT_","",\str_replace("%ANSWER",$answer,$this->getMsg("answer_format"))));  
     }
-    $p->sendMessage($this->getMsg("how_to_answer"));
-   }
+    $p->sendMessage("-----------------------");
+    $p->sendMessage($this->getMsg("how_to_answer")); 
+   } 
   }
  }
  
  public function endQuiz(){
   $players_played = \count($this->quiz_players);
-  foreach ($this->quiz_players as $how => $player){
+  foreach ($this->quiz_players as $player => $how){
    if ($how == "wrong"){
+    unset($this->quiz_players[$player]);
     if ($this->cfg->get("lose_commands") !== false and !($player->hasPermission("eq.lose"))){
      foreach ($this->cfg->get("lose_commands") as $com){
-      $this->getServer()->getPluginManager()->dispatchCommand(new ConsoleCommandSender,\str_replace("%PLAYER",$player,$com));   
+      $this->getServer()->dispatchCommand(new ConsoleCommandSender,\str_replace("%PLAYER",$player,$com));   
      }
     }
-    unset($this->quiz_players[$player]);
    }
    elseif ($how == "correct"){
-    $players_won = \count($this->quiz_players);
     if ($this->cfg->get("name_players") === true){
      $players_won_names = [];
     }
-    if ($players_won <= $this->cfg->get("winners")){
-     foreach($this->quiz_players as $player){
-      $this->getServer()->getPlayerExact($player)->sendMessage($this->getMsg("quiz_won"));
+    if (\count($this->quiz_players) <= $this->cfg->get("winners")){
+     foreach($this->quiz_players as $player => $how){
+      $this->getServer()->getPlayerExact($player)->sendMessage($this->getMsg("win_quiz"));     
       if ($this->cfg->get("name_players") === true){
        $temp_array = [$player];
        $players_won_names = array_merge($temp_array,$players_won_names);
       }
       if ($this->cfg->get("win_commands") !== false){
        foreach ($this->cfg->get("win_commands") as $com){
-        $this->getServer()->getPluginManager()->dispatchCommand(new ConsoleCommandSender,\str_replace("%PLAYER",$player,$com));   
+        $this->getServer()->dispatchCommand(new ConsoleCommandSender,\str_replace("%PLAYER",$player,$com));   
        }
       }
      }   
     }
     else {
-     $difference = ($this->cfg->get("winners") - $players_won);
+     $difference = ((\count($this->quiz_players)) - ($this->cfg->get("winners")));
      $sad_losers = array_rand($this->quiz_players,$difference);
+     if (!(is_array($sad_losers))){
+      $sad_losers = [$sad_losers];
+     }
      foreach ($sad_losers as $loser){
       unset($this->quiz_players[$loser]);
       $this->getServer()->getPlayerExact($loser)->sendMessage($this->getMsg("sorry_lose"));
      }
-     foreach($this->quiz_players as $player){
-      $this->getServer()->getPlayerExact($player)->sendMessage($this->getMsg("quiz_won"));
+     foreach($this->quiz_players as $player => $how){
+      $this->getServer()->getPlayerExact($player)->sendMessage($this->getMsg("win_quiz"));
       if ($this->cfg->get("name_players") === true){
        $temp_array = [$player];
        $players_won_names = array_merge($temp_array,$players_won_names);
       }
       if ($this->cfg->get("win_commands") !== false){
        foreach ($this->cfg->get("win_commands") as $com){
-        $this->getServer()->getPluginManager()->dispatchCommand(new ConsoleCommandSender,\str_replace("%PLAYER",$player,$com));   
+        foreach ($this->quiz_players as $player => $how){
+         $this->getServer()->getPluginManager()->dispatchCommand(new ConsoleCommandSender,\str_replace("%PLAYER",$player,$com));
+        }   
        }
       }
      }
     }
    }
   }
+  foreach ($this->getServer()->getOnlinePlayers() as $p){
+   $p->sendMessage($this->getMsg("quiz_end"));  
+  }
   if ($this->cfg->get("show_stats") === true){
-   $players_lost = ($players_played - $players_won);
+   $players_lost = ($players_played - count($this->quiz_players));
    foreach ($this->getServer()->getOnlinePlayers() as $p){
-    $p->sendMessage(\str_replace("%NUMBER",$players_played,$this->getMsg("quiz_end_one")));
-    if ($this->cfg->get("name_players") === true){
-     $names = implode(" ",$players_won_names);
+    $p->sendMessage("-----------------");
+    $p->sendMessage($this->getMsg("answers_were"));
+    foreach ($this->curr_aw as $question => $answers){
+     foreach ($answers as $answer){
+      if (strpos($answer,"CORRECT_") !== false){
+       $p->sendMessage(\str_replace("CORRECT_","",\str_replace("%ANSWER",$answer,\str_replace("%QUESTION",$question,$this->getMsg("answer_was")))));
+      }
+     }
+    }
+    $p->sendMessage("-----------------");
+    $p->sendMessage(\str_replace("%NUMBER",$players_played,$this->getMsg("quiz_end_one")));    
+    if ($this->cfg->get("name_winners") === true and \count($this->quiz_players) !== 0){
+     $name = [];
+     foreach ($this->quiz_players as $player => $how){
+      $temp_array = [$player];
+      $name = array_merge($temp_array,$name);
+     }
+     $names = implode(" ",$name);
      $p->sendMessage(\str_replace("%VARIABLE",$names,$this->getMsg("quiz_end_two")));
     }
     else {
-     $p->sendMessage(\str_replace("%VARIABLE",$players_won,$this->getMsg("quiz_end_two")));   
+     $p->sendMessage(\str_replace("%VARIABLE",count($this->quiz_players),$this->getMsg("quiz_end_two")));   
     }
     $p->sendMessage(\str_replace("%NUMBER",$players_lost,$this->getMsg("quiz_end_three")));
+    $p->sendMessage("-----------------");
    }
   }
-  $this->resetAll();  
+  $this->resetAll();
  }
  
  public function resetAll(){
   $this->curr_aw = null;
   $this->quiz_players = [];
-  foreach($this->getServer()->getOnlinePlayers() as $p){
-   $p->sendMessage($this->getMsg("quiz_end"));   
-  }
  }
  
  public function getMsg($msg){

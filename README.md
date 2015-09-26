@@ -2,17 +2,25 @@ EasyQUIZ v 1.0.0 by kvetinac97
 ===============================
 An easy quiz plugin for PocketMine
 
+How does it work?
+ - start quiz => answer quiz => win/lose!
+
 There are two options how start the quiz:
-a) set it in config.yml
-b) do the command /eq (permission eq.command)
+ - type command /eq (permission eq.command)
+ - in config.yml, set "auto_start" to true
+ 
+When quiz is started, plugin'll ask randomly selected answer from questions.yml
+ - and it'll also write answers
 
-After starting quiz, there'll be shown introduction message + question
+Players have X seconds to answer the questions (config.yml "time_for_answer")
 
-Players have X seconds (configurable in config.yml) to answer by command /aw <answer>
-Then, winner(s) will receive some prizes
+Then will be dispatched commands (config.yml "win_commands" & "lose_commands")
+for players who have won/lost (you can't lose with permission eq.lose)
 
-For more options, see config.yml
+There are more features to discover, it's recommended to look at config.yml and questions.yml
 
 <h3>New!!! Now, you can donate for support me! Donate <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=XQ5TDS9GZ38T2">>>HERE<<</a></h3>
 
-If you want to translate EasyQUIZ into your own language, create a pull request on github
+You can select your language by changing the two-letter value in config.yml
+Currently supported: English (en), French (fr), German (de), Czech (cs)
+You can translate EasyQUIZ to your own language and create pull request on Github 

@@ -5,7 +5,7 @@
 
 namespace kvetinac97;
 
-use pocketmine\plugin\PluginTask;
+use pocketmine\scheduler\PluginTask;
 use kvetinac97\Main;
 
 class QuestionTask extends PluginTask{

@@ -1,20 +1,17 @@
 #Default config for v1.0.0
 
 #Here, write your language: <= ENGLISH(en)
-#Ici, écrivez votre langue <= FRANÇAIS(fr)
-#Schreiben, sie ihre sprache <= DEUTSCH (de)
 #Zde napište váš jazyk: <= ČEŠTINA(cs)
+#Ici, écrivez votre langue: <= FRANÇAIS(fr)
+#----------------------------- DEUTSCH (de)
 #If you want add more languages, make a pull request on github!
 language: "en"
 
 #Version (1), don't change
 version: 1
 
-#Here write number of questions that should be generated for one quiz
-number_of_questions: 5
-
 #Time that players have to answer each question (in seconds)
-time_for_answer: 10
+time_for_answer: 30
 
 #Write, if you want to share stats like
 #Answer: Yes Guessed: 20
@@ -38,7 +35,7 @@ name_winners: true
 #Write false if you don't want to execute any commands :3
 # %PLAYER will be replaced with name of winner/loser
 win_commands:
- - "give %PLAYER iron_ignot 1"
+ - "say %PLAYER has won the quiz!"
 
 #Commands that will be executed for players who answer wrongly
 #Write false if you don't want to execute any commands

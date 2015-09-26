@@ -18,6 +18,7 @@ class PostQuestionTask extends PluginTask{
  }
  
  public function onRun($t){
+  $this->plugin->getServer()->getScheduler()->scheduleDelayedTask(new PostQuestionTask($this->plugin),$this->plugin->cfg->get("auto_interval")*20*60);
   $this->plugin->newQuiz();   
  }
  
