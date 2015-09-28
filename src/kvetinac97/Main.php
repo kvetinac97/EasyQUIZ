@@ -55,7 +55,7 @@ class Main extends PluginBase implements Listener{
   }
   
   $this->getLogger()->info(TextFormat::DARK_GREEN."EasyQUIZ ENABLED!");
-  $this->getLogger()->info(TextFormat::YELLOW."Running version 1.0.0");
+  $this->getLogger()->info(TextFormat::YELLOW."Running version 1.0.1");
   
   if ($this->cfg->get("auto_start") === true){
    $this->getServer()->getScheduler()->scheduleDelayedTask(new PostQuestionTask($this),$this->cfg->get("auto_interval")*20*60);   
@@ -95,24 +95,23 @@ class Main extends PluginBase implements Listener{
     if (!($sd instanceof ConsoleCommandSender)){
      if ($this->curr_aw !== null){
        $typed = \implode(" ",$args); 
-        foreach ($this->curr_aw as $question => $answers){
-         foreach ($answers as $answer){
+         foreach ($this->curr_aw["answers"] as $answer){
          if (stripos($answer,"CORRECT_") !== false){         
           if ($typed == \str_replace("CORRECT_","",$answer)){
            $sd->sendMessage($this->getMsg("answered"));
+           unset($this->quiz_players[$sd->getName()]);            
            $temp_array = [$sd->getName() => "correct"];
            $this->quiz_players = array_merge($temp_array,$this->quiz_players);
            return true;
           }
           else {
-           $sd->sendMessage($this->getMsg("answered"));  
+           $sd->sendMessage($this->getMsg("answered"));
+           unset($this->quiz_players[$sd->getName()]);  
            $temp_array = [$sd->getName() => "wrong"];
            $this->quiz_players = array_merge($temp_array,$this->quiz_players);
            return true;
           }
          }
-         return true;
-        }
          return true;
         }
         return true;
@@ -137,24 +136,31 @@ class Main extends PluginBase implements Listener{
   }
  
  public function newQuiz(){
-  if ($this->curr_aw === null){
+  if ($this->curr_aw === null and $this->questions->getAll() !== []){
    $quiz_questions = array_rand($this->questions->getAll(),1);
    $this->getServer()->getScheduler()->scheduleDelayedTask(new QuestionTask($this),($this->cfg->get("time_for_answer")*20));
+   $question = $quiz_questions;
+   $answers = ($this->questions->get($question));
+   $this->curr_aw = [
+    "question" => $question,
+    "answers" => $answers
+    ];
    foreach ($this->getServer()->getOnlinePlayers() as $p){
     $p->sendMessage(TextFormat::GREEN.$this->getMsg("quiz_info"));
-    $question = $quiz_questions;
-    $answers = $this->questions->get($question);
-    $this->curr_aw = [$question => $answers];
     $p->sendMessage("-----------------------"); 
     $p->sendMessage(TextFormat::YELLOW.$question); 
     $p->sendMessage("-----------------------");
     $p->sendMessage($this->getMsg("avaible_answers"));
     foreach ($answers as $answer){
-     $p->sendMessage(\str_replace("CORRECT_","",\str_replace("%ANSWER",$answer,$this->getMsg("answer_format"))));  
+     $p->sendMessage(\str_replace("CORRECT_","",\str_replace("%ANSWER",$answer,$this->getMsg("answer_format")))); 
     }
     $p->sendMessage("-----------------------");
     $p->sendMessage($this->getMsg("how_to_answer")); 
    } 
+  }
+  else {
+   $this->getLogger()->critical($this->getMsg("no_questions"));
+   $this->getServer()->getPluginManager()->disablePlugin($this);
   }
  }
  
@@ -206,7 +212,7 @@ class Main extends PluginBase implements Listener{
       if ($this->cfg->get("win_commands") !== false){
        foreach ($this->cfg->get("win_commands") as $com){
         foreach ($this->quiz_players as $player => $how){
-         $this->getServer()->getPluginManager()->dispatchCommand(new ConsoleCommandSender,\str_replace("%PLAYER",$player,$com));
+         $this->getServer()->dispatchCommand(new ConsoleCommandSender,\str_replace("%PLAYER",$player,$com));
         }   
        }
       }
@@ -222,13 +228,11 @@ class Main extends PluginBase implements Listener{
    foreach ($this->getServer()->getOnlinePlayers() as $p){
     $p->sendMessage("-----------------");
     $p->sendMessage($this->getMsg("answers_were"));
-    foreach ($this->curr_aw as $question => $answers){
-     foreach ($answers as $answer){
+     foreach ($this->curr_aw["answers"] as $answer){
       if (strpos($answer,"CORRECT_") !== false){
-       $p->sendMessage(\str_replace("CORRECT_","",\str_replace("%ANSWER",$answer,\str_replace("%QUESTION",$question,$this->getMsg("answer_was")))));
+       $p->sendMessage(\str_replace("CORRECT_","",\str_replace("%ANSWER",$answer,\str_replace("%QUESTION",$this->curr_aw["question"],$this->getMsg("answer_was")))));
       }
      }
-    }
     $p->sendMessage("-----------------");
     $p->sendMessage(\str_replace("%NUMBER",$players_played,$this->getMsg("quiz_end_one")));    
     if ($this->cfg->get("name_winners") === true and \count($this->quiz_players) !== 0){
@@ -246,6 +250,10 @@ class Main extends PluginBase implements Listener{
     $p->sendMessage(\str_replace("%NUMBER",$players_lost,$this->getMsg("quiz_end_three")));
     $p->sendMessage("-----------------");
    }
+  }
+  if ($this->cfg->get("delete_question") === true){
+   $this->questions->remove($this->curr_aw["question"]);
+   $this->questions->save();
   }
   $this->resetAll();
  }

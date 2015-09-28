@@ -23,3 +23,4 @@ permission_eq_command: "&cDu hast nicht die benötigten Rechte für den Command 
 permission_eq_answer: "&cDu hast nicht die benötigten Rechte für den Command &e/aw!"
 too_many_arguments: "&cDu hast zu viele Antworten gegeben! &7&oUsage: /eq"
 quiz_running: "&cEin Quiz läuft bereits! Bitte warte..."
+no_questions: "&cThere aren't any questions in questions.yml!"

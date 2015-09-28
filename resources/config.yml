@@ -1,4 +1,4 @@
-#Default config for v1.0.0
+#Default config for v1.0.1
 
 #Here, write your language: <= ENGLISH(en)
 #Zde napište váš jazyk: <= ČEŠTINA(cs)
@@ -12,6 +12,10 @@ version: 1
 
 #Time that players have to answer each question (in seconds)
 time_for_answer: 30
+
+#Do you want to delete question from questions.yml when it's been posted?
+#This is good to beware repeating questions...
+delete_question: true
 
 #Write, if you want to share stats like
 #Answer: Yes Guessed: 20
