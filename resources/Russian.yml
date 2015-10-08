@@ -1,0 +1,29 @@
+#Russian config by translateRussian aka tankisu01:
+
+not_for_console: "&cЭта команда недоступна для консоли"
+quiz_info: "&aНачалась новая викторина!"
+quiz_not_running: "&cСейчас нет викторин!"
+avaible_answers: "&7&oВы можете выбрать следующие ответы:"
+answer_format: "&e%NUMBER %ANSWER"
+how_to_answer: "&bВы можете ответить с помощью /aw answer. У вас не должно быть опечаток!"
+how_to_answer_two: "&bВы можете ответить с помощью /aw <номер ответа>."
+answered: "&aВы успешно ответили!"
+win_quiz: "&aПоздравляем: Вы выиграли викторину!"
+lose_quiz: "cВаш ответ был неверным. Вы должны что-то потерять"
+sorry_lose: "&cВаш ответ был верным, но вы не были выбраны,."
+answers_were: "&eОтветы:"
+answer_was_correct: "&7%QUESTION: &a%ANSWER"
+answer_was_wrong: "&7%QUESTION: &c%ANSWER"
+quiz_end: "&eВикторина закончилась!"
+quiz_end_one: "&bВ викторине участвовало &e%NUMBER &bигрока/игроков"
+quiz_end_two: "&aИгроков выиграло: &d%VARIABLE"
+quiz_end_three: "&cИгроков проиграло: &e%NUMBER"
+
+#Сообщения об ошибках:
+#Вы можете использовать цвета &1/§1 (&1 рекомендовано)
+permission_eq_command: "&d У вас недостаточно прав для использования команды &e/eq!"
+permission_eq_answer: "&cУ вас недостаточно прав для использования команды &e/aw!"
+too_many_arguments: "&cВы использовали слишком много атрибутов. &7&oИспользование: /eq"
+quiz_running: "&cВикторина уже идёт! Пожалуйста, подождите..."
+no_questions: "&cНет вопросов в файле questions.yml!"
+wrong_arguments: "&cВы использовали слишком много атрибутов! &7&oИспользованиe: /aw <номер>"
