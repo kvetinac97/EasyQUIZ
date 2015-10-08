@@ -1,9 +1,6 @@
 EasyQUIZ v 1.0.1 by kvetinac97
 ===============================
-<i>An easy quiz plugin for PocketMine</i>
-
-<b>Currently I'm banned on PocketMine (cuz GameCrafter has reported me)
-You can see my ban status <a href="http://ban.kvetinac97.eu/">HERE</a></b>
+An easy quiz plugin for PocketMine
 
 How does it work?
  - start quiz => answer quiz => win/lose!
@@ -32,4 +29,4 @@ Added in v1.0.1:
 
 - You can delete question when it is posted!
 - Plugin will be automatically disabled if there aren't any questions
-- <s>Now, every answer can be correct!</s> this bug has appeared!
+- Now, every answer can be correct!
