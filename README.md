@@ -2,6 +2,8 @@ EasyQUIZ v 1.1.0 by kvetinac97
 ===============================
 An easy quiz plugin for PocketMine
 
+Thanks for the plugin idea to @pomee4
+
 How does it work?
  - start quiz => answer quiz => win/lose!
 
@@ -29,9 +31,7 @@ You can translate EasyQUIZ to your own language and create pull request on Githu
 Added in v1.0.1:
 
 - You can delete question when it is posted!
-- Plugin will be automatically disabled if there aren't any questions
-- Now, every answer can be correct!
-<<<<<<< HEAD
+- Plugin will be automatically disabled if there aren't any questions!
 
 Added in v1.1.0:
 
@@ -39,6 +39,4 @@ Added in v1.1.0:
 - No annoying crashes when player who has played the quiz disconnects!
 - New option: config.yml "answer_format": You can set the
   answer format to /aw <num>!
-- Thanks for the idea of update to @pomee4!
-=======
->>>>>>> origin/master
+- Thanks for the idea of update to @doducquang
