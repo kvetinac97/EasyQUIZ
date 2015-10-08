@@ -3,7 +3,7 @@ main: kvetinac97\Main
 api: [1.12.0,1.13.0,2.0.0]
 load: STARTUP
 description: "Easy quiz plugin for everyone!"
-version: 1.0.1
+version: 1.1.0
 author: kvetinac97
 commands:
  eq:
@@ -11,7 +11,7 @@ commands:
   description: "Universal command for starting the quiz"
   permission: eq.command
  aw:
-  usage: "/aw"
+  usage: "/aw <num|answer>"
   description: "Universal command for answering the quiz"
   permission: eq.answer
 permissions:

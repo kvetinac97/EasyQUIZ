@@ -1,4 +1,4 @@
-#Default config for v1.0.1
+#Default config for v1.1.0
 
 #Here, write your language: <= ENGLISH(en)
 #Zde napište váš jazyk: <= ČEŠTINA(cs)
@@ -7,8 +7,13 @@
 #If you want add more languages, make a pull request on github!
 language: "en"
 
-#Version (1), don't change
-version: 1
+#Version (2), don't change
+version: 2
+
+#What answer method would you like to use?
+#1) "answers" method: /aw <answer>  - Write true
+#2) "123" method: /aw <num> - Write false
+answer_format: false
 
 #Time that players have to answer each question (in seconds)
 time_for_answer: 30
@@ -16,6 +21,10 @@ time_for_answer: 30
 #Do you want to delete question from questions.yml when it's been posted?
 #This is good to beware repeating questions...
 delete_question: true
+
+#When quiz is started, should the answers be showed?
+#It's highly recommended to write false only when you use "answers" method
+show_answers: true
 
 #Write, if you want to share stats like
 #Answer: Yes Guessed: 20

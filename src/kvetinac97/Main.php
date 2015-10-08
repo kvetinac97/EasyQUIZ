@@ -55,7 +55,7 @@ class Main extends PluginBase implements Listener{
   }
   
   $this->getLogger()->info(TextFormat::DARK_GREEN."EasyQUIZ ENABLED!");
-  $this->getLogger()->info(TextFormat::YELLOW."Running version 1.0.1");
+  $this->getLogger()->info(TextFormat::YELLOW."Running version 1.1.0");
   
   if ($this->cfg->get("auto_start") === true){
    $this->getServer()->getScheduler()->scheduleDelayedTask(new PostQuestionTask($this),$this->cfg->get("auto_interval")*20*60);   
@@ -94,27 +94,33 @@ class Main extends PluginBase implements Listener{
    if ($sd->hasPermission("eq.answer")){
     if (!($sd instanceof ConsoleCommandSender)){
      if ($this->curr_aw !== null){
+      if ($this->cfg->get("answer_format") === true or !(isset($args[1]))){
+      if ($this->cfg->get("answer_format") === true){
        $typed = \implode(" ",$args); 
-         foreach ($this->curr_aw["answers"] as $answer){
-         if (stripos($answer,"CORRECT_") !== false){         
-          if ($typed == \str_replace("CORRECT_","",$answer)){
-           $sd->sendMessage($this->getMsg("answered"));
-           unset($this->quiz_players[$sd->getName()]);            
-           $temp_array = [$sd->getName() => "correct"];
-           $this->quiz_players = array_merge($temp_array,$this->quiz_players);
-           return true;
-          }
-          else {
-           $sd->sendMessage($this->getMsg("answered"));
-           unset($this->quiz_players[$sd->getName()]);  
-           $temp_array = [$sd->getName() => "wrong"];
-           $this->quiz_players = array_merge($temp_array,$this->quiz_players);
-           return true;
-          }
-         }
-         return true;
-        }
-        return true;
+      }
+      else {
+       $typed = $this->curr_aw[$args[0]];
+      }
+      if (\in_array($typed,$this->curr_aw["correct"])){
+       $sd->sendMessage($this->getMsg("answered"));
+       unset($this->quiz_players[$sd->getName()]);            
+       $temp_array = [$sd->getName() => "correct"];
+       $this->quiz_players = array_merge($temp_array,$this->quiz_players);
+       return true;
+      }
+      else {
+       $sd->sendMessage($this->getMsg("answered"));
+       unset($this->quiz_players[$sd->getName()]);  
+       $temp_array = [$sd->getName() => "wrong"];
+       $this->quiz_players = array_merge($temp_array,$this->quiz_players);
+       return true;      
+      }
+       return true;
+      }
+      else {
+       $sd->sendMessage($this->getMsg("wrong_arguments"));
+      }  
+       return true;
        }
      else {
       $sd->sendMessage($this->getMsg("quiz_not_running"));    
@@ -143,21 +149,41 @@ class Main extends PluginBase implements Listener{
    $answers = ($this->questions->get($question));
    $this->curr_aw = [
     "question" => $question,
-    "answers" => $answers
+    "answers" => $answers,
+    "correct" => []
     ];
    foreach ($this->getServer()->getOnlinePlayers() as $p){
     $p->sendMessage(TextFormat::GREEN.$this->getMsg("quiz_info"));
     $p->sendMessage("-----------------------"); 
     $p->sendMessage(TextFormat::YELLOW.$question); 
-    $p->sendMessage("-----------------------");
-    $p->sendMessage($this->getMsg("avaible_answers"));
-    foreach ($answers as $answer){
-     $p->sendMessage(\str_replace("CORRECT_","",\str_replace("%ANSWER",$answer,$this->getMsg("answer_format")))); 
+    if ($this->cfg->get("show_answers") === true){
+     $p->sendMessage("-----------------------");
+     $p->sendMessage($this->getMsg("avaible_answers"));
+    } 
+     foreach ($answers as $key => $answer){
+      $this->curr_aw[$key+1] = \str_replace("CORRECT_","",$answer);
+      if (stripos($answer,"CORRECT_") !== false){
+       $replace = \str_replace("CORRECT_","",$answer);
+       $this->curr_aw["correct"] = array_merge([$key => $replace],$this->curr_aw["correct"]);
+      }
+     if ($this->cfg->get("show_answers") === true){      
+      if ($this->cfg->get("answer_format") === true){
+       $p->sendMessage(\str_replace("CORRECT_","",\str_replace("%ANSWER",$answer,\str_replace("%NUMBER","- ",$this->getMsg("answer_format")))));
+      }
+      else {
+       $p->sendMessage(\str_replace("CORRECT_","",\str_replace("%ANSWER",$answer,\str_replace("%NUMBER",(($key+1).")"),$this->getMsg("answer_format")))));
+      }      
+     }
+     }
+     $p->sendMessage("-----------------------"); 
+    if ($this->cfg->get("answer_format") === true){
+     $p->sendMessage($this->getMsg("how_to_answer"));
     }
-    $p->sendMessage("-----------------------");
-    $p->sendMessage($this->getMsg("how_to_answer")); 
+    else {
+     $p->sendMessage($this->getMsg("how_to_answer_two"));
+    }
    } 
-  }
+   } 
   else {
    $this->getLogger()->critical($this->getMsg("no_questions"));
    $this->getServer()->getPluginManager()->disablePlugin($this);
@@ -170,6 +196,7 @@ class Main extends PluginBase implements Listener{
    if ($how == "wrong"){
     unset($this->quiz_players[$player]);
     if ($this->cfg->get("lose_commands") !== false and !($player->hasPermission("eq.lose"))){
+    try {$this->getServer()->getPlayerExact($player)->sendMessage($this->getMsg("lose_quiz")); } catch(Exception $e){}    
      foreach ($this->cfg->get("lose_commands") as $com){
       $this->getServer()->dispatchCommand(new ConsoleCommandSender,\str_replace("%PLAYER",$player,$com));   
      }
@@ -181,7 +208,7 @@ class Main extends PluginBase implements Listener{
     }
     if (\count($this->quiz_players) <= $this->cfg->get("winners")){
      foreach($this->quiz_players as $player => $how){
-      $this->getServer()->getPlayerExact($player)->sendMessage($this->getMsg("win_quiz"));     
+     try { $this->getServer()->getPlayerExact($player)->sendMessage($this->getMsg("win_quiz")); } catch(Exception $e){}     
       if ($this->cfg->get("name_players") === true){
        $temp_array = [$player];
        $players_won_names = array_merge($temp_array,$players_won_names);
@@ -201,10 +228,10 @@ class Main extends PluginBase implements Listener{
      }
      foreach ($sad_losers as $loser){
       unset($this->quiz_players[$loser]);
-      $this->getServer()->getPlayerExact($loser)->sendMessage($this->getMsg("sorry_lose"));
+      try {$this->getServer()->getPlayerExact($loser)->sendMessage($this->getMsg("sorry_lose")); } catch(Exception $e){} 
      }
      foreach($this->quiz_players as $player => $how){
-      $this->getServer()->getPlayerExact($player)->sendMessage($this->getMsg("win_quiz"));
+      try {$this->getServer()->getPlayerExact($player)->sendMessage($this->getMsg("win_quiz")); }catch(Exception $e){} 
       if ($this->cfg->get("name_players") === true){
        $temp_array = [$player];
        $players_won_names = array_merge($temp_array,$players_won_names);
@@ -229,9 +256,12 @@ class Main extends PluginBase implements Listener{
     $p->sendMessage("-----------------");
     $p->sendMessage($this->getMsg("answers_were"));
      foreach ($this->curr_aw["answers"] as $answer){
-      if (strpos($answer,"CORRECT_") !== false){
-       $p->sendMessage(\str_replace("CORRECT_","",\str_replace("%ANSWER",$answer,\str_replace("%QUESTION",$this->curr_aw["question"],$this->getMsg("answer_was")))));
-      }
+      if (stripos($answer,"CORRECT_") !== false){
+      $p->sendMessage(\str_replace("CORRECT_","",\str_replace("%ANSWER",$answer,\str_replace("%QUESTION",$this->curr_aw["question"],$this->getMsg("answer_was_correct")))));
+     }
+     else {
+      $p->sendMessage(TextFormat::RED.\str_replace("CORRECT_","",\str_replace("%ANSWER",$answer,\str_replace("%QUESTION",$this->curr_aw["question"],$this->getMsg("answer_was_wrong")))));
+     }
      }
     $p->sendMessage("-----------------");
     $p->sendMessage(\str_replace("%NUMBER",$players_played,$this->getMsg("quiz_end_one")));    
