@@ -2,7 +2,7 @@
 
 not_for_console: "&cCette commande n'est pas disponible pour la Console"
 quiz_info: "&aUn nouveau QUIZ commence!"
-quiz_not_running: "&cIl n'y a pas de quiz qui ont commencé!"
+quiz_not_running: "&cAucun quiz n'a commencé!"
 avaible_answers: "&eVous pouvez choisir parmis les réponses:"
 answer_format: "&e%NUMBER %ANSWER"
 how_to_answer: "&bVous pouvez répondre avec /aw réponse. Soyez sûr que vous n'avez pas fais de fautes de frappe!"
@@ -26,5 +26,5 @@ permission_eq_command: "&cVous n'avez pas la permission d'utiliser la commande :
 permission_eq_answer: "&cVous n'avez pas la permission d'utiliser la commande : &e/aw!"
 too_many_arguments: "&cVous avez utilisé trop d'arguments! &7&oUsage: /eq"
 quiz_running: "&cUn quiz a deja commencé! Merci d'attendre..."
-no_questions: "&cIl n'y sont pas aucune questions dans questions.yml"
+no_questions: "&cIl y a aucune question dans le fichier questions.yml"
 wrong_arguments: "&cVous avez utilisé trop d'arguments! &7&oUsage: /aw <num>"
