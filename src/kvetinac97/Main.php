@@ -48,7 +48,11 @@ class Main extends PluginBase implements Listener{
    $this->msg = new Config($this->getDataFolder()."Czech.yml",Config::YAML);
    $this->getLogger()->info(TextFormat::GREEN."Vybraný jazyk: Čeština");
   }
-  else {
+  elseif ($this->cfg->get("language") == "ru"){
+   $this->saveResource("Russian.yml");
+   $this->msg = new Config($this->getDataFolder()."Russian.yml",Config::YAML);
+   $this->getLogger()->info(TextFormat::GREEN."Выбран язык: Русский");
+  }  else {
    $this->saveResource("English.yml");
    $this->msg = new Config($this->getDataFolder()."English.yml",Config::YAML);
    $this->getLogger()->info(TextFormat::GREEN."Language selected: English");   
