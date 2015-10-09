@@ -23,7 +23,7 @@ for players who have won/lost (you can't lose with permission eq.lose)
 There are more features to discover, it's recommended to look at config.yml and questions.yml
 
 You can select your language by changing the two-letter value in config.yml
-Currently supported: English (en), French (fr), German (de), Czech (cs), Russian (ru).
+Currently supported: English (en), French (fr), German (de), Czech (cs), Polish (pl), Russian (ru).
 You can translate EasyQUIZ to your own language and create pull request on Github
 
 <h3>You can donate for support me! Donate <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=XQ5TDS9GZ38T2">>>HERE<<</a></h3> 
