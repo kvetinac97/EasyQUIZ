@@ -1,7 +1,7 @@
 <?php
 
 // EasyQUIZ plugin
-// © kvetinac97 2015
+// © kvetinac97 2016
 
 namespace kvetinac97;
 
