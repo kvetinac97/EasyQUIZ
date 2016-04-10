@@ -3,7 +3,7 @@ main: kvetinac97\Main
 api: ["2.0.0"]
 load: STARTUP
 description: "Easy quiz plugin for everyone!"
-version: 2.0.0
+version: 2.0.1
 author: kvetinac97
 commands:
  eq:

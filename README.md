@@ -1,4 +1,4 @@
-EasyQUIZ v 1.1.0 by kvetinac97
+EasyQUIZ v 2.0.1 by kvetinac97
 ===============================
 An easy quiz plugin for PocketMine
 
@@ -26,8 +26,6 @@ You can select your language by changing the two-letter value in config.yml
 Currently supported: English (en), French (fr), German (de), Czech (cs), Polish (pl), Russian (ru).
 You can translate EasyQUIZ to your own language and create pull request on Github
 
-<h3>You can donate for support me! Donate <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=XQ5TDS9GZ38T2">>>HERE<<</a></h3> 
-
 Added in v1.0.1:
 
 - You can delete question when it is posted!
@@ -40,3 +38,11 @@ Added in v1.1.0:
 - New option: config.yml "answer_format": You can set the
   answer format to /aw <num>!
 - Thanks for the idea of update to @doducquang
+
+Added in v2.0.0:
+
+- bug fixes!
+
+Added in v2.0.1:
+
+- license, copyright, and updated README!

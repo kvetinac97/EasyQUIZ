@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 // EasyQUIZ plugin v2
 // © kvetinac97 2016
@@ -50,7 +50,7 @@ class Main extends PluginBase implements Listener{
         $this->msg = new Config($this->getDataFolder().$lang.".yml", Config::YAML);
         $this->getLogger()->info($msg);
         $this->getLogger()->info(TextFormat::DARK_GREEN."EasyQUIZ ENABLED!");
-        $this->getLogger()->info(TextFormat::YELLOW."Running version 1.1.0");
+        $this->getLogger()->info(TextFormat::YELLOW."Running version 2.0.1");
         if ($this->cfg->get("auto_start")){
             $this->getServer()->getScheduler()->scheduleDelayedTask(new PostQuestionTask($this),$this->cfg->get("auto_interval")*20*60);
         }
