@@ -89,21 +89,31 @@ class Main extends PluginBase implements Listener{
                             $sd->sendMessage($this->getMsg("already_answered"));
                             return true;
                         }
-                        if ($this->cfg->get("answer_format") === true or !(isset($args[1]))){
-                            if ($this->cfg->get("answer_format") === true){
-                                $typed = \implode(" ",$args);
+                        if ($this->cfg->get("answer_format") or !(isset($args[1]))){
+                            if ($this->cfg->get("answer_format")){
+                                $typed = \implode(" ", $args);
+                                foreach ($this->data["answers"] as $key => $value){
+                                    if (str_replace("CORRECT_", "", $value) == $typed){
+                                        $typed = $key-1;
+                                    }
+                                }
                             }
                             else {
-                                $typed = $this->data["answers"][$args[0]];
+                                $typed = $args[0]-1;
                             }
-                            if (stripos($typed, "CORRECT_") !== false){
+                            if (!isset($this->data["answers"][$typed])){
                                 $sd->sendMessage($this->getMsg("answered"));
+                                $this->data["wrong_players"][$sd->getName()] = $sd->getName();
+                                return true;
+                            }
+                            $typed = $this->data["answers"][$typed];
+                            if (stripos($typed, "CORRECT_") !== false){
                                 $this->data["correct_players"][$sd->getName()] = $sd->getName();
                             }
                             else {
-                                $sd->sendMessage($this->getMsg("answered"));
                                 $this->data["wrong_players"][$sd->getName()] = $sd->getName();
                             }
+                            $sd->sendMessage($this->getMsg("answered"));
                         }
                         else {
                             $sd->sendMessage($this->getMsg("wrong_arguments"));
@@ -141,7 +151,7 @@ class Main extends PluginBase implements Listener{
                 $answers = $this->data["questions"][$this->data["question"]];
                 $this->data["answers"] = $answers;
                 foreach ($answers as $key => $value){
-                    $p->sendMessage($key.") ".$value);
+                    $p->sendMessage(($key+1).") ".str_replace("CORRECT_", "", $value));
                 }
                 $p->sendMessage("-----------------------");
                 if ($this->cfg->get("answer_format") === true){
@@ -174,7 +184,15 @@ class Main extends PluginBase implements Listener{
                 }
             }
         }
-        $winners = \array_rand($this->data["correct_players"], $this->cfg->get("winners"));
+        if (count($this->data["correct_players"]) === 0){
+            $winners = [];
+        }
+        elseif (count($this->data["correct_players"]) < $this->cfg->get("winners")){
+            $winners = \array_rand($this->data["correct_players"], \count($this->data["correct_players"]));
+        }
+        else {
+            $winners = \array_rand($this->data["correct_players"], $this->cfg->get("winners"));
+        }
         if (!is_array($winners)) {
             $winners = [$winners];
         }
@@ -183,27 +201,25 @@ class Main extends PluginBase implements Listener{
             $p = $this->getServer()->getPlayerExact($winner);
             if ($p instanceof Player) {
                 $p->sendMessage($this->getMsg("win_quiz"));
+                unset($this->data["correct_players"][$winner]);
                 if ($this->cfg->get("win_commands") !== false){
                     foreach ($this->cfg->get("win_commands") as $com){
-                        $this->getServer()->dispatchCommand(new ConsoleCommandSender,\str_replace("%PLAYER",$player,$com));
+                        $this->getServer()->dispatchCommand(new ConsoleCommandSender,\str_replace("%PLAYER",$winner,$com));
                     }
                 }
             }
         }
         foreach ($this->data["correct_players"] as $player){
-            if (isset($this->data["winers"][$player])){
-                $p = $this->getServer()->getPlayerExact($player);
-                if ($p instanceof Player){
-                    $p->sendMessage($this->getMsg("sorry_lose"));
-
-                }
+            $p = $this->getServer()->getPlayerExact($player);
+            if ($p instanceof Player){
+                $p->sendMessage($this->getMsg("sorry_lose"));
             }
         }
         foreach ($this->getServer()->getOnlinePlayers() as $p){
             $p->sendMessage($this->getMsg("quiz_end"));
         }
         if ($this->cfg->get("show_stats")){
-            $players_lost = \count($this->data["wrong_players"]) + \count($this->data["correct_players"]) - \count($this->data["winners"]);
+            $players_lost = \count($this->data["wrong_players"]) + \count($this->data["correct_players"]);
             foreach ($this->getServer()->getOnlinePlayers() as $p){
                 $p->sendMessage("-----------------");
                 $p->sendMessage($this->getMsg("answers_were"));
@@ -216,15 +232,9 @@ class Main extends PluginBase implements Listener{
                     }
                 }
                 $p->sendMessage("-----------------");
-                $p->sendMessage(\str_replace("%NUMBER",\count($this->data["wrong_players"]) + \count($this->data["correct_players"]),$this->getMsg("quiz_end_one")));
+                $p->sendMessage(\str_replace("%NUMBER",\count($this->data["wrong_players"]) + \count($this->data["correct_players"]) + \count($this->data["winners"]),$this->getMsg("quiz_end_one")));
                 if ($this->cfg->get("name_winners") === true and \count($this->data["winners"]) !== 0){
-                    $name = [];
-                    foreach (\array_merge($this->data["correct_players"], $this->data["wrong_players"]) as $player => $how){
-                        $temp_array = [$player];
-                        $name = array_merge($temp_array,$name);
-                    }
-                    $names = implode(" ",$name);
-                    $p->sendMessage(\str_replace("%VARIABLE",$names,$this->getMsg("quiz_end_two")));
+                    $p->sendMessage(\str_replace("%VARIABLE",\implode(" ", $this->data["winners"]),$this->getMsg("quiz_end_two")));
                 }
                 else {
                     $p->sendMessage(\str_replace("%VARIABLE",count($this->data["winners"]),$this->getMsg("quiz_end_two")));
