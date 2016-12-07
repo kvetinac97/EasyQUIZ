@@ -10,7 +10,7 @@ how_to_answer: "&bOdpowiedz używając /aw answer.\n&bUpewnij się czy nie pope�
 how_to_answer_two: "&bOdpowiedz używając /aw <numer odpowiedzi>."
 answered: "&aTo jest prawidłowa odpowiedź!"
 win_quiz: "&aGratulacje: Wygrałeś quiz!"
-lose_quiz: "cYour answer was wrong. You have to lose something"
+lose_quiz: "&cTwoja odpowiedź była zła. Trzeba coś stracić"
 sorry_lose: "&cTwoja odpowiedź była poprawna, ale\n&cnie zostałeś wybrany"
 answers_were: "&eOdpowiedzi:"
 answer_was_correct: "&7%QUESTION: &a%ANSWER"
